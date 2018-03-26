@@ -14,4 +14,8 @@ public class StaticMethods {
     public static double max3(double x, double y, double z){
         return Math.max(x, Math.max(y, z));
     }
+
+    public static boolean majority(boolean x1, boolean x2, boolean x3){
+        return (x1 && x2) || (x1 && x3) || (x2 && x3);
+    }
 }
