@@ -1,10 +1,14 @@
 public class StaticMethods {
     public static void main(String[] args){
-        int x = Integer.parseInt(args[0]);
-        int y = Integer.parseInt(args[1]);
-        int z = Integer.parseInt(args[2]);
+        int[] a = { 3, 1, 4, 1, 5 };
+        int[] b = { 3, 1, 4, 1 };
+        int[] c = { 3, 1, 4, 1, 5 };
+        int[] d = { 2, 7, 1, 8, 2 };
 
-        System.out.println(max3(x, y, z));
+        StdOut.println(eq(a, a));
+        StdOut.println(eq(a, b));
+        StdOut.println(eq(a, c));
+        StdOut.println(eq(a, d));
     }
 
     public static int max3(int x, int y, int z){
@@ -17,5 +21,13 @@ public class StaticMethods {
 
     public static boolean majority(boolean x1, boolean x2, boolean x3){
         return (x1 && x2) || (x1 && x3) || (x2 && x3);
+    }
+
+    public static boolean eq(int[] a1, int[] a2){
+        if (a1.length != a2.length) return false;
+        for (int i = 0; i < a1.length; i++){
+            if (a1[i] != a2[i]) return false;
+        }
+        return true;
     }
 }
