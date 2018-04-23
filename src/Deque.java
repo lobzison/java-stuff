@@ -35,6 +35,10 @@ public class Deque<Item> implements Iterable<Item> {
             current = current.next;
             return item;
         }
+
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 
     public boolean isEmpty() { // is the deque empty?
@@ -46,6 +50,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public void addFirst(Item item) {// add the item to the front
+        checkNulls(item);
         Node oldfirst = first;
         first = new Node();
         first.value = item;
@@ -60,6 +65,7 @@ public class Deque<Item> implements Iterable<Item> {
     }
 
     public void addLast(Item item) {// add the item to the end
+        checkNulls(item);
         Node oldlast = last;
         last = new Node();
         last.value = item;
@@ -106,6 +112,10 @@ public class Deque<Item> implements Iterable<Item> {
 
     private void checkUnderflow() {
         if (isEmpty()) throw new NoSuchElementException("deque underflow");
+    }
+
+    private void checkNulls(Item item) {
+        if (item == null) throw new IllegalArgumentException("no no no, i clean");
     }
 
     public static void main(String[] args) {
