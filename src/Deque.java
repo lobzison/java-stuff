@@ -1,5 +1,3 @@
-import edu.princeton.cs.algs4.LinkedStack;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -12,6 +10,12 @@ public class Deque<Item> implements Iterable<Item> {
         private Item value;
         private Node next;
         private Node previous;
+    }
+
+    public Deque() {
+        n = 0;
+        first = null;
+        last = null;
     }
 
     public Iterator<Item> iterator() {
@@ -33,22 +37,97 @@ public class Deque<Item> implements Iterable<Item> {
         }
     }
 
-    public boolean isEmpty() {
+    public boolean isEmpty() { // is the deque empty?
         return n == 0;
     }
 
+    public int size() { // return the number of items on the deque
+        return n;
+    }
 
-    //    public Deque()                           // construct an empty deque
-//    public boolean isEmpty()                 // is the deque empty?
-//    public int size()                        // return the number of items on the deque
-//    public void addFirst(Item item)          // add the item to the front
-//    public void addLast(Item item)           // add the item to the end
-//    public Item removeFirst()                // remove and return the item from the front
-//    public Item removeLast()                 // remove and return the item from the end
-//    public Iterator<Item> iterator()         // return an iterator over items in order from front to end
+    public void addFirst(Item item) {// add the item to the front
+        Node oldfirst = first;
+        first = new Node();
+        first.value = item;
+        if (n == 0) {
+            last = first;
+        }
+        if (oldfirst != null) {
+            oldfirst.previous = first;
+        }
+        first.next = oldfirst;
+        n++;
+    }
 
-    public static void main(String[] args) { // unit testing (optional)
-        int n = 1;
+    public void addLast(Item item) {// add the item to the end
+        Node oldlast = last;
+        last = new Node();
+        last.value = item;
+        if (n == 0) {
+            first = last;
+        }
+        if (oldlast != null) {
+            oldlast.next = last;
+        }
+        last.previous = oldlast;
+        n++;
+    }
+
+    public Item removeFirst() {// remove and return the item from the front
+        checkUnderflow();
+        Item item = first.value;
+        first.previous = null;
+        if (first.next != null) {
+            first = first.next;
+        }
+        resetPointers();
+        n--;
+        return item;
+    }
+
+    public Item removeLast() {// remove and return the item from the end
+        checkUnderflow();
+        Item item = last.value;
+        last.next = null;
+        if (last.previous != null) {
+            last = last.previous;
+        }
+        resetPointers();
+        n--;
+        return item;
+    }
+
+    private void resetPointers() {
+        if (n == 1) {
+            first = null;
+            last = null;
+        }
+    }
+
+    private void checkUnderflow() {
+        if (isEmpty()) throw new NoSuchElementException("deque underflow");
+    }
+
+    public static void main(String[] args) {
+        Deque<String> deque = new Deque<String>();
+        while (!StdIn.isEmpty()) {
+            String item = StdIn.readString();
+            switch (item) {
+                case "#":
+                    StdOut.print(deque.removeFirst() + ' ');
+                    break;
+                case "@":
+                    StdOut.print(deque.removeLast() + ' ');
+                    break;
+                case "addfirst":
+                    deque.addFirst(item);
+                    break;
+                case "addlast":
+                    deque.addLast(item);
+                    break;
+            }
+        }
+        StdOut.println("(" + deque.size() + " left on deque)");
     }
 
 }
