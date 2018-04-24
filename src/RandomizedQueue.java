@@ -22,7 +22,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         int current;
 
         RandomizedQueueIterator() {
-            for (int i = 0; i < n; i++){
+            for (int i = 0; i < n; i++) {
                 rndIdx[i] = i;
             }
             StdRandom.shuffle(rndIdx);
