@@ -1,7 +1,8 @@
-import edu.princeton.cs.algs4.StdRandom;
-
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
+import edu.princeton.cs.algs4.StdRandom;
 
 public class RandomizedQueue<Item> implements Iterable<Item> {
 
@@ -19,19 +20,18 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private class RandomizedQueueIterator<Item> implements Iterator<Item> {
         int[] rndIdx = new int[n];
-        int current;
+        int current = 0;
 
         RandomizedQueueIterator() {
             for (int i = 0; i < n; i++) {
                 rndIdx[i] = i;
             }
             StdRandom.shuffle(rndIdx);
-            current = 0;
         }
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
-            return (Item) a[current++];
+            return (Item) a[rndIdx[current++]];
         }
 
         public boolean hasNext() {
@@ -81,6 +81,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         int rnd = StdRandom.uniform(n);
         Item val = a[rnd];
         a[rnd] = a[--n];
+        a[n] = null; // avoid loitering
         return val;
     }
 
