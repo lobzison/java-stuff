@@ -1,3 +1,5 @@
+import edu.princeton.cs.algs4.StdRandom;
+
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -16,26 +18,24 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class RandomizedQueueIterator<Item> implements Iterator<Item> {
-        int[] nonEmpty;
-        int k = 0;
+        int[] rndIdx = new int[n];
+        int current;
 
         RandomizedQueueIterator() {
-            nonEmpty = new int[n];
-            int j = 0;
-            for (int i = 0; i < a.length; i++) {
-                if (a[i] != null) {
-                    nonEmpty[++j] = i;
-                }
+            for (int i = 0; i < n; i++){
+                rndIdx[i] = i;
             }
+            StdRandom.shuffle(rndIdx);
+            current = 0;
         }
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
-            return (Item) a[nonEmpty[++k]];
+            return (Item) a[current++];
         }
 
         public boolean hasNext() {
-            return k < n;
+            return current < n;
         }
 
         public void remove() {
@@ -70,35 +70,23 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     public void enqueue(Item item) {
+        checkNull(item);
         rescaleIfNeeded();
-        int rnd = n;
-        while (a[rnd] != null) {
-            rnd = StdRandom.uniform(a.length);
-        }
-        a[rnd] = item;
-        n++;
-        System.out.println("items: "+Integer.toString(n) +" array size:"+ Integer.toString(a.length));
+        a[n++] = item;
     }
-// TODO: fix the bug with last item
+
     public Item dequeue() {
-        chechUnderflow();
+        checkUnderflow();
         rescaleIfNeeded();
-        int rnd = n;
-        while (a[rnd] == null) {
-            rnd = StdRandom.uniform(a.length);
-        }
+        int rnd = StdRandom.uniform(n);
         Item val = a[rnd];
-        a[rnd] = null;
-        n--;
-        System.out.println("items: "+Integer.toString(n) +" array size:"+ Integer.toString(a.length));
+        a[rnd] = a[--n];
         return val;
     }
 
     public Item sample() {
-        int rnd = n;
-        while (a[rnd] == null) {
-            rnd = StdRandom.uniform(a.length);
-        }
+        checkUnderflow();
+        int rnd = StdRandom.uniform(n);
         return a[rnd];
     }
 
@@ -107,13 +95,17 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
         while (!StdIn.isEmpty()) {
             String item = StdIn.readString();
             if (!item.equals("-")) rque.enqueue(item);
-            else if (!rque.isEmpty()) StdOut.print(rque.dequeue() + " ");
+            else StdOut.print(rque.dequeue() + " ");
         }
         StdOut.println("(" + rque.size() + " left on stack)");
     }
 
-    private void chechUnderflow() {
+    private void checkUnderflow() {
         if (isEmpty()) throw new NoSuchElementException("deque underflow");
+    }
+
+    private void checkNull(Item item) {
+        if (item == null) throw new IllegalArgumentException("no nulls in my queueueue");
     }
 
 
