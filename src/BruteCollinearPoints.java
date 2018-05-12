@@ -1,20 +1,23 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BruteCollinearPoints {
     private ArrayList<LineSegment> segments = new ArrayList<>();
 
     public BruteCollinearPoints(Point[] points) {
         int len = points.length;
-        for (int p1 = 0; p1 < len; p1++) {
-            for (int p2 = 0; p2 < len; p2++) {
-                for (int p3 = 0; p3 < len; p3++) {
-                    for (int p4 = 0; p4 < len; p4++) {
-                        if (points[p1].slopeTo(points[p2]) == points[p2].slopeTo(points[p3]) &&
-                                points[p2].slopeTo(points[p3]) == points[p3].slopeTo(points[p4])) {
-                            if (points[p1].compareTo(points[p2]) < 0 &&
-                                    points[p2].compareTo(points[p3]) < 0 &&
-                                    points[p3].compareTo(points[p4]) < 0) {
-                                LineSegment LS = new LineSegment(points[p1], points[p4]);
+
+        Point[] pointsCopy = Arrays.copyOf(points, len);
+        Arrays.sort(pointsCopy);
+
+        for (int p1 = 0; p1 < len - 3; p1++) {
+            for (int p2 = p1 + 1; p2 < len - 2; p2++) {
+                for (int p3 = p2 + 1; p3 < len - 1; p3++) {
+                    for (int p4 = p3 + 1; p4 < len; p4++) {
+                        if (pointsCopy[p1].slopeTo(pointsCopy[p2]) == pointsCopy[p2].slopeTo(pointsCopy[p3]) &&
+                                pointsCopy[p2].slopeTo(pointsCopy[p3]) == pointsCopy[p3].slopeTo(pointsCopy[p4])) { {
+                                LineSegment LS = new LineSegment(pointsCopy[p1], pointsCopy[p4]);
+                                System.out.println(pointsCopy[p1].toString() + pointsCopy[p2].toString() + pointsCopy[p3].toString() + pointsCopy[p4].toString());
                                 segments.add(LS);
                             }
                         }

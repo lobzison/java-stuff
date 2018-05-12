@@ -54,12 +54,12 @@ public class Point implements Comparable<Point> {
      * @return the slope between this point and the specified point
      */
     public double slopeTo(Point that) {
-        if (this.compareTo(that) == 0) return equal;
-        int x_delta = that.x - this.x;
-        if (x_delta == 0) return horizontal;
-        int y_delta = that.y - this.y;
-        if (y_delta == 0) return vertical;
-        return y_delta / x_delta;
+        if (this.y - that.y == 0) {
+            if (this.x - that.x == 0) return equal;
+            return horizontal;
+        }
+        else if (this.x - that.x == 0) return vertical;
+        return (that.y - this.y) / (double) (that.x - this.x);
     }
 
     /**
