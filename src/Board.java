@@ -35,7 +35,15 @@ public class Board {
     }
 
     public boolean isGoal() {
-        return this.blocks == this.goal;
+        int dim = dimension();
+        for (int i = 0; i < dim; i++) {
+            for (int j = 0; j < dim; j++) {
+                if (this.blocks[i][j] != this.goal[i][j]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public String toString() {
@@ -52,7 +60,7 @@ public class Board {
     }
 
     public static void main(String[] args) {
-        int[][] solved3 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+        int[][] solved3 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 0}};
         int[][] unsloved3 = {{1, 2, 4}, {3, 0, 6}, {7,8,5}};
 
         Board solved3b = new Board(solved3);
