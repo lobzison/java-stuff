@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.Queue;
+
 import java.util.Arrays;
 
 
@@ -33,16 +34,6 @@ public class Board {
 
         this.neighbours = temp;
 
-    }
-
-    private class coords {
-        public final int x;
-        public final int y;
-
-        public coords(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
     }
 
     public int dimension() {
