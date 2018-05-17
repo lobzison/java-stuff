@@ -1,5 +1,5 @@
 public class Solver {
-    Board init;
+    private Board init;
 
     public Solver(Board initial) {
         this.init = initial;

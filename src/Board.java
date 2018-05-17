@@ -172,7 +172,7 @@ public class Board {
         return Arrays.deepEquals(this.blocks, that.blocks);
     }
 
-    public Queue<Board> calcNeighbors() {
+    private Queue<Board> calcNeighbors() {
         Queue<Board> neig = new Queue<>();
         int x = 0, y = 0;
         for (int i = 0; i < dim; i++) {
