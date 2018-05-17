@@ -5,34 +5,17 @@ import java.util.Arrays;
 
 public class Board {
     private final int[][] blocks;
-    private final int[][] goal;
     private final int manhattan;
     private final int hamming;
     private final int dim;
-    private final Queue<Board> neighbours;
 
     public Board(int[][] blocks) {
         checkInput(blocks);
         this.blocks = blocks;
         this.dim = dimension();
-        this.goal = new int[dim][dim];
-        //calculate goal
-        for (int i = 0, val = 1; i < dim; i++) {
-            for (int j = 0; j < dim; j++) {
-                if (i == dim - 1 && j == dim - 1) {
-                    goal[i][j] = 0;
-                } else {
-                    goal[i][j] = val;
-                    val++;
-                }
-            }
-        }
         //calculate scores
         this.hamming = calcHamming();
         this.manhattan = calcManhattan();
-        Queue<Board> temp = new Queue<>();
-
-        this.neighbours = temp;
 
     }
 
@@ -51,7 +34,8 @@ public class Board {
     public boolean isGoal() {
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                if (this.blocks[i][j] != this.goal[i][j]) {
+                int goal = (i * dim) + j + 1;
+                if (this.blocks[i][j] != goal && this.blocks[i][j] != 0) {
                     return false;
                 }
             }
@@ -83,7 +67,8 @@ public class Board {
         int score = 0;
         for (int i = 0; i < dim; i++) {
             for (int j = 0; j < dim; j++) {
-                if (this.blocks[i][j] != this.goal[i][j] && this.blocks[i][j] != 0) {
+                int goal = (i * dim) + j + 1;
+                if (this.blocks[i][j] != goal && this.blocks[i][j] != 0) {
                     score++;
                 }
             }
@@ -107,7 +92,7 @@ public class Board {
         }
         return score;
     }
-
+// TODO: rewrite this
     public Board twin() {
         int i = 0, j = 0;
         while (this.blocks[i][j] == 0 || this.blocks[i][j + 1] == 0) {
@@ -138,8 +123,6 @@ public class Board {
         String str_board = unsloved3b.toString();
         System.out.println(str_board);
 
-        System.out.println(Arrays.deepToString(solved3b.goal));
-        System.out.println(Arrays.deepToString(unsloved3b.goal));
         assert !unsloved3b.isGoal();
         assert solved3b.isGoal();
         System.out.println("----");
@@ -150,7 +133,7 @@ public class Board {
         assert scores.manhattan() == 10;
         System.out.println(twinTestb.twin());
         assert twinTestb2.equals(twinTestb);
-        System.out.println(twinTestb.calcNeighbors());
+        System.out.println(twinTestb.neighbors());
 
     }
 
@@ -163,7 +146,8 @@ public class Board {
         return Arrays.deepEquals(this.blocks, that.blocks);
     }
 
-    private Queue<Board> calcNeighbors() {
+
+    public Iterable<Board> neighbors() {
         Queue<Board> neig = new Queue<>();
         int x = 0, y = 0;
         for (int i = 0; i < dim; i++) {
@@ -174,7 +158,7 @@ public class Board {
                 }
             }
         }
-        System.out.println("x: " + x + " y: " + y);
+        //System.out.println("x: " + x + " y: " + y);
         if (x - 1 >= 0) {
             neig.enqueue(new Board(exchange(x, y, x - 1, y)));
         }
@@ -188,10 +172,6 @@ public class Board {
             neig.enqueue(new Board(exchange(x, y, x, y + 1)));
         }
         return neig;
-    }
-
-    public Iterable<Board> neighbors() {
-        return this.neighbours;
     }
 
     private int[][] exchange(int x1, int y1, int x2, int y2) {
