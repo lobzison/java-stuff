@@ -92,18 +92,16 @@ public class Board {
         }
         return score;
     }
-// TODO: rewrite this
+    
     public Board twin() {
-        int i = 0, j = 0;
-        while (this.blocks[i][j] == 0 || this.blocks[i][j + 1] == 0) {
-            if (j == dim - 2) {
-                j = 0;
-                i++;
-            }
-            j++;
-            if (i >= dim - 1 && j >= dim - 2) throw new IllegalArgumentException("wtf");
+        if (this.blocks[0][0] == 0) {
+            return new Board(exchange(0, 1, 1, 1));
         }
-        return new Board(exchange(i, j, i, j + 1));
+        if (this.blocks[0][1] != 0) {
+            return new Board(exchange(0, 0, 0, 1));
+        } else {
+            return new Board(exchange(0, 0, 1, 0));
+        }
     }
 
     public static void main(String[] args) {
