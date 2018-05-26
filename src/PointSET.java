@@ -1,13 +1,13 @@
-import java.util.TreeSet;
+import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
 import java.util.ArrayList;
 
 public class PointSET {
-    private final TreeSet<Point2D> pointSet;
+    private SET<Point2D> pointSet;
 
     public PointSET () {
-        pointSet = new TreeSet<>();
+        pointSet = new SET<>();
     }
 
     public boolean isEmpty() {
@@ -19,10 +19,12 @@ public class PointSET {
     }
 
     public void insert(Point2D p) {
+        check(p);
         pointSet.add(p);
     }
 
     public boolean contains(Point2D p) {
+        check(p);
         return pointSet.contains(p);
     }
 
@@ -46,9 +48,9 @@ public class PointSET {
 
     public Point2D nearest(Point2D p) {
         double lowest = Double.POSITIVE_INFINITY;
-        Point2D closest = p;
+        Point2D closest = null;
         for (Point2D point : pointSet) {
-            double dist = p.distanceTo(point);
+            double dist = p.distanceSquaredTo(point);
             if (dist < lowest) {
                 closest = point;
                 lowest = dist;
@@ -70,7 +72,7 @@ public class PointSET {
         test.insert(point4);
         RectHV rect = new RectHV(0,0,0.2,0.2);
         System.out.println(test.range(rect));
-        System.out.println(test.nearest(pointTest));
+        System.out.println(test.size());
 
     }
 }
