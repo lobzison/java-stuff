@@ -1,12 +1,13 @@
 import edu.princeton.cs.algs4.SET;
 import edu.princeton.cs.algs4.Point2D;
 import edu.princeton.cs.algs4.RectHV;
+
 import java.util.ArrayList;
 
 public class PointSET {
     private SET<Point2D> pointSet;
 
-    public PointSET () {
+    public PointSET() {
         pointSet = new SET<>();
     }
 
@@ -34,7 +35,7 @@ public class PointSET {
         }
     }
 
-    private void check (Point2D p) {
+    private void check(Point2D p) {
         if (p == null) throw new IllegalArgumentException("input point is null");
     }
 
@@ -61,16 +62,16 @@ public class PointSET {
 
     public static void main(String[] args) {
         PointSET test = new PointSET();
-        Point2D point1 = new Point2D(0,0);
-        Point2D point2 = new Point2D(1,1);
-        Point2D point3 = new Point2D(1,0);
-        Point2D point4 = new Point2D(0,1);
-        Point2D pointTest = new Point2D(0.9,0.9);
+        Point2D point1 = new Point2D(0, 0);
+        Point2D point2 = new Point2D(1, 1);
+        Point2D point3 = new Point2D(1, 0);
+        Point2D point4 = new Point2D(0, 1);
+        Point2D pointTest = new Point2D(0.9, 0.9);
         test.insert(point1);
         test.insert(point2);
         test.insert(point3);
         test.insert(point4);
-        RectHV rect = new RectHV(0,0,0.2,0.2);
+        RectHV rect = new RectHV(0, 0, 0.2, 0.2);
         System.out.println(test.range(rect));
         System.out.println(test.size());
 
