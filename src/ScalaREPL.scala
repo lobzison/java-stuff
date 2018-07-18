@@ -1,5 +1,5 @@
 println("HW")
-
+import scala.annotation.tailrec
 def myMethod (x: String, y: String, z: String = "default") = {
   println(s"$x and $y and $z")
 }
@@ -72,7 +72,7 @@ def mergesort2(vec: Vector[Int]): Vector[Int] = {
   if (vec.size <= 1) {vec}
   else {
     val vectors = vec splitAt (vec.size / 2)
-    merge(mergesort (vectors._1), mergesort(vectors._2))
+    merge(mergesort2 (vectors._1), mergesort2(vectors._2))
   }
 }
 println(mergesort2(Vector(6,1,1,2,5,7,8,9,4,535,1,32,5,7,8,345,1,32,4,6,587,24,213,4,2,6,567)))
@@ -81,6 +81,7 @@ println(mergesort2(Vector(6,1,1,2,5,7,8,9,4,535,1,32,5,7,8,345,1,32,4,6,587,24,2
 
 def mergesort3(vec: Vector[Int]): Vector[Int] = {
   def merge(first:Vector[Int], second:Vector[Int]):Vector[Int] = {
+    @tailrec
     def aux(acc:Vector[Int], first:Vector[Int], second:Vector[Int]):Vector[Int] = {
         (first.isEmpty, second.isEmpty) match {
         case (true,_) => acc ++ second
@@ -96,11 +97,36 @@ def mergesort3(vec: Vector[Int]): Vector[Int] = {
   if (vec.size <= 1) {vec}
   else {
     val vectors = vec splitAt (vec.size / 2)
-    merge(mergesort (vectors._1), mergesort(vectors._2))
+    merge(mergesort3 (vectors._1), mergesort3(vectors._2))
   }
 }
 
 println(mergesort3(Vector(6,1,1,2,5,7,8,9,4,535,1,32,5,7,8,345,1,32,4,6,587,24,213,4,2,6,567)))
 
+def time[R](block: => R) = {
+    val t0 = System.nanoTime()
+    val result = block    // call-by-name
+    val t1 = System.nanoTime()
+    println("Elapsed time: " + (t1 - t0) + "ns")
+    result
+}
+
+val r =  scala.util.Random
+val max = 10000
+
+def createRandomVector(size: Int):Vector[Int] = {
+  def aux(acc:Vector[Int]):Vector[Int] = {
+    if (acc.size >= size) { acc }
+    else {aux (acc :+ r.nextInt(max))}
+  }
+  aux(Vector())
+}
+
+val v = createRandomVector(10000)
+
+time {mergesort(v)}  // Elapsed time: 233399999ns
+time {mergesort2(v)} // Elapsed time: 183700001ns
+time {mergesort3(v)} // Elapsed time: 257400000ns
+//WTF
 
 
