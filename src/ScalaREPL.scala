@@ -145,3 +145,20 @@ def mergesort4(vec: Vector[Int]): Vector[Int] = {
     merge(Vector(), mergesort4 (vectors._1), mergesort4(vectors._2))
   }
 }
+
+def quicksort1(vec:Vector[Int]):Vector[Int] = {
+  val size = vec.size
+  if (size < 2) {
+    vec
+  }
+  else {
+    val rand_index = scala.util.Random.nextInt(size)
+    val pivot = vec(rand_index)
+    val left = vec.filter(_ < pivot)
+    val middle = vec.filter(_ == pivot)
+    val right = vec.filter(_ > pivot)
+    quicksort1(left) ++ middle ++ quicksort1(right)
+  }
+}
+
+time {quicksort1(v)} // Elapsed time: 2432700000ns
