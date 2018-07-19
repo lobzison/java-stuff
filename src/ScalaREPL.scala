@@ -129,4 +129,19 @@ time {mergesort2(v)} // Elapsed time: 183700001ns
 time {mergesort3(v)} // Elapsed time: 257400000ns
 //WTF
 
-
+def mergesort4(vec: Vector[Int]): Vector[Int] = {
+  @tailrec
+  def merge(acc:Vector[Int], first:Vector[Int], second:Vector[Int]):Vector[Int] = {
+        (first, second) match {
+          case (fHead+:fTail, sHead+:sTail) => if (fHead < sHead) {merge(acc :+ fHead, fTail, second)}
+                                               else {merge(acc :+ sHead, first, sTail)}
+          case (_+:_,_) => acc ++ first
+          case (_,_+:_) => acc ++ second
+        }
+  }
+  if (vec.size <= 1) {vec}
+  else {
+    val vectors = vec splitAt (vec.size / 2)
+    merge(Vector(), mergesort4 (vectors._1), mergesort4(vectors._2))
+  }
+}
